@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <title>Controller-F by F-3r</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Controller-F</h1>
+        <h2>A very simple midi controller using arduino</h2>
+
+        <section id="downloads">
+          <a href="https://github.com/F-3r/controller-F/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/F-3r/controller-F/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/F-3r/controller-F" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h1>
+<a id="controller-f" class="anchor" href="#controller-f" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Controller-F</h1>
+
+<p>A very simple midi controller.</p>
+
+<h1>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Features</h1>
+
+<ul>
+<li>6 potentiometers which sends control change midi messages (controls 22 to 28) over 6 channels</li>
+<li>channel switcher and rgb led to identify the current channel.</li>
+</ul>
+
+<h1>
+<a id="build" class="anchor" href="#build" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Build</h1>
+
+<p>Both, the code and the circuit, are pretty simple and straight forward.</p>
+
+<p>Parts:</p>
+
+<ul>
+<li>1 Arduino</li>
+<li>6 10K potentiometers</li>
+<li>1 RGB led, common anode (common cathode, or three separate leds would work too with some minor adjustments)</li>
+<li>3 220 ohms resistors</li>
+<li>1 push switch</li>
+</ul>
+
+<p>This is how the components should be connected</p>
+
+<p><img src="https://raw.githubusercontent.com/F-3r/controller-F/master/schematics/controller-F.png"></p>
+
+<p>Open up the sketch in arduino, burn the code to the board, and done :)</p>
+
+<h1>
+<a id="test--usage" class="anchor" href="#test--usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Test &amp; usage</h1>
+
+<p>In order to use the controller in any music software you'll need some kind of serial-to-midi bridge. </p>
+
+<p>Like:</p>
+
+<ul>
+<li><a href="http://www.varal.org/ttymidi/">ttymidi</a></li>
+<li><a href="http://projectgus.github.io/hairless-midiserial/">the hairless MIDI-to-Serial bridge</a></li>
+</ul>
+
+<p>Using ttymidi, connect your arduino to the computer and run:</p>
+
+<div class="highlight highlight-source-shell"><pre><span class="pl-c"># you should replace /dev/ttyUSB0 with the device assgined to the arduino</span>
+ttymidi -v -s /dev/ttyUSB0 -b 9600</pre></div>
+
+<p>While turning the knobs you see an output like:</p>
+
+<div class="highlight highlight-source-shell"><pre>[f-3r@hidrogen controller-F]$ ttymidi -v -s /dev/ttyUSB0 -b 9600
+
+Serial  0xb0 Controller change  000 022 002
+Serial  0xb0 Controller change  000 022 003
+Serial  0xb0 Controller change  000 022 004
+Serial  0xb0 Controller change  000 022 005
+Serial  0xb0 Controller change  000 022 006
+Serial  0xb0 Controller change  000 022 007
+Serial  0xb0 Controller change  000 022 008
+Serial  0xb0 Controller change  000 022 009
+Serial  0xb0 Controller change  000 022 010
+Serial  0xb0 Controller change  000 022 011
+Serial  0xb0 Controller change  000 022 012
+Serial  0xb0 Controller change  000 022 013
+Serial  0xb0 Controller change  000 022 014
+Serial  0xb0 Controller change  000 023 038
+Serial  0xb0 Controller change  000 023 039
+Serial  0xb0 Controller change  000 023 040
+Serial  0xb0 Controller change  000 023 041
+Serial  0xb0 Controller change  000 023 042
+Serial  0xb0 Controller change  000 023 043
+Serial  0xb0 Controller change  000 023 044
+Serial  0xb0 Controller change  000 023 045
+Serial  0xb0 Controller change  000 023 046
+Serial  0xb0 Controller change  000 023 047
+Serial  0xb0 Controller change  000 024 047
+Serial  0xb0 Controller change  000 024 048
+Serial  0xb0 Controller change  000 024 049
+Serial  0xb0 Controller change  000 024 050
+Serial  0xb0 Controller change  000 024 051
+Serial  0xb0 Controller change  000 024 052
+Serial  0xb0 Controller change  000 024 053
+Serial  0xb0 Controller change  000 025 002
+Serial  0xb0 Controller change  000 025 003
+Serial  0xb0 Controller change  000 025 004
+Serial  0xb0 Controller change  000 025 005
+Serial  0xb0 Controller change  000 003 006
+Serial  0xb0 Controller change  000 023 007
+Serial  0xb0 Controller change  000 023 008
+Serial  0xb0 Controller change  000 023 009
+Serial  0xb0 Controller change  000 023 010
+<span class="pl-c">#...</span>
+</pre></div>
+
+<p>Here you can see the control change messages arriving. The 3 last numbers are: channel, control, value</p>
+
+<h1>
+<a id="hacking" class="anchor" href="#hacking" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Hacking</h1>
+
+<p>Most of the features are controlled by the constants defined at the start of the file, like knobs count, channel count, channel indicator colors. Experiment!</p>
+
+<h1>
+<a id="contributions" class="anchor" href="#contributions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contributions</h1>
+
+<p>Are always welcomed!</p>
+
+<h1>
+<a id="references-and-inspiration" class="anchor" href="#references-and-inspiration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>References and inspiration</h1>
+
+<ul>
+<li><a href="http://itp.nyu.edu/physcomp/labs/labs-serial-communication/lab-midi-output-using-an-arduino/">http://itp.nyu.edu/physcomp/labs/labs-serial-communication/lab-midi-output-using-an-arduino/</a></li>
+<li><a href="http://www.tigoe.net/pcomp/code/communication/midi/">http://www.tigoe.net/pcomp/code/communication/midi/</a></li>
+<li><a href="http://hinton-instruments.co.uk/reference/midi/protocol/index.htm">http://hinton-instruments.co.uk/reference/midi/protocol/index.htm</a></li>
+<li><a href="http://hinton-instruments.co.uk/reference/midi/protocol/pg02.htm">http://hinton-instruments.co.uk/reference/midi/protocol/pg02.htm</a></li>
+<li><a href="http://forum.arduino.cc/index.php/topic,37848.0.html">http://forum.arduino.cc/index.php/topic,37848.0.html</a></li>
+</ul>
+
+<h1>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h1>
+
+<p>The MIT License (MIT)
+Copyright (c) 2016  Fernando Martínez</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+      </section>
+    </div>
+
+    
+  </body>
+</html>
